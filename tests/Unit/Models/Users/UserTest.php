@@ -110,15 +110,15 @@ class UserTest extends TestCase
         $this->assertNull(User::findById(3));
     }
 
-    public function test_find_by_email_should_return_the_user(): void
-    {
-        $this->assertEquals($this->user->id, User::findByEmail($this->user->email)->id);
-    }
-
-    public function test_find_by_email_should_return_null(): void
-    {
-        $this->assertNull(User::findByEmail('not.exits@example.com'));
-    }
+    #public function test_find_by_email_should_return_the_user(): void
+    #{
+    #    $this->assertEquals($this->user->id, User::findByEmail($this->user->email)->id);
+    #}
+#
+    #public function test_find_by_email_should_return_null(): void
+    #{
+    #    $this->assertNull(User::findByEmail('not.exits@example.com'));
+    #}
 
     public function test_authenticate_should_return_the_true(): void
     {

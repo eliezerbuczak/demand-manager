@@ -24,10 +24,11 @@ class ProfilePopulate
       'show_all_demands' => 0,
       'id_user_created' => 1,
     ];
-    $user = new Profile($user);
-    $user->save();
     $admin = new Profile($admin);
     $admin->save();
+    $user = new Profile($user);
+    $user->save();
+
 
     UsersPopulate::update();
 
