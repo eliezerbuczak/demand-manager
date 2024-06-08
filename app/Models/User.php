@@ -17,8 +17,6 @@ use Core\Database\ActiveRecord\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
- * @property Problem[] $problems
- * @property Problem[] $reinforced_problems
  */
 class User extends Model
 {
@@ -28,11 +26,6 @@ class User extends Model
 
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
-
-    public function problems(): HasMany
-    {
-        return $this->hasMany(Problem::class, 'user_id');
-    }
 
     public function validates(): void
     {
@@ -76,10 +69,5 @@ class User extends Model
     public function avatar(): ProfileAvatar
     {
         return new ProfileAvatar($this);
-    }
-
-    public function reinforcedProblems(): BelongsToMany
-    {
-        return $this->belongsToMany(Problem::class, 'problem_user_reinforce', 'user_id', 'problem_id');
     }
 }
