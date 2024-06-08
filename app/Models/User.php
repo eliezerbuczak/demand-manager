@@ -73,6 +73,6 @@ class User extends Model
 
     public function avatar(): ProfileAvatar
     {
-      return new ProfileAvatar($this);
+        return new ProfileAvatar($this);
     }
 }
