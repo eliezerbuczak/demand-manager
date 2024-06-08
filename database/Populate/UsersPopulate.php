@@ -6,32 +6,42 @@ use App\Models\User;
 
 class UsersPopulate
 {
-    public static function populate()
-    {
-        $data =  [
-            'name' => 'Fulano',
-            'email' => 'fulano@example.com',
-            'password' => '123456',
-            'password_confirmation' => '123456'
-        ];
+  public static function populate()
+  {
+    $data = [
+      'name' => 'Eliezer Boeira',
+      'email' => 'admin@example.com',
+      'password' => 'admin',
+      'password_confirmation' => 'admin'
+    ];
 
-        $user = new User($data);
-        $user->save();
+    $user = new User($data);
+    $user->save();
 
-        $numberOfUsers = 10;
+    $data = [
+      'name' => 'João Silva',
+      'email' => 'user@example.com',
+      'password' => 'user',
+      'password_confirmation' => 'user'
+    ];
 
-        for ($i = 1; $i < $numberOfUsers; $i++) {
-            $data =  [
-                'name' => 'Fulano ' . $i,
-                'email' => 'fulano' . $i . '@example.com',
-                'password' => '123456',
-                'password_confirmation' => '123456'
-            ];
+    $user = new User($data);
+    $user->save();
+    echo "Users populated with 2 registers\n";
+  }
 
-            $user = new User($data);
-            $user->save();
-        }
+  public static function update()
+  {
 
-        echo "Users populated with $numberOfUsers registers\n";
-    }
+    $user = User::findById(1);
+    $user->update([
+      'profile_id' => 1,
+      'updated_at' => date('Y-m-d H:i:s')
+    ]);
+    $user = User::findById(2);
+    $user->update([
+      'profile_id' => 2,
+      'updated_at' => date('Y-m-d H:i:s')
+    ]);
+  }
 }
