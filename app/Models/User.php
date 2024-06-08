@@ -82,5 +82,4 @@ class User extends Model
     {
         return $this->belongsToMany(Problem::class, 'problem_user_reinforce', 'user_id', 'problem_id');
     }
-
 }
