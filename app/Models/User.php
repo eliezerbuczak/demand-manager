@@ -13,8 +13,7 @@ use Core\Database\ActiveRecord\Model;
  * @property string $name
  * @property string $email
  * @property string $encrypted_password
- * @property Problem[] $problems
- * @property Problem[] $reinforced_problems
+ * @property int $profile_id
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
@@ -22,20 +21,11 @@ use Core\Database\ActiveRecord\Model;
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $columns = ['name', 'email', 'encrypted_password', 'created_at', 'updated_at', 'deleted_at'];
+    protected static array $columns = ['name', 'email', 'encrypted_password',
+      'profile_id', 'created_at', 'updated_at', 'deleted_at'];
 
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
-
-    public function problems(): HasMany
-    {
-        return $this->hasMany(Problem::class, 'user_id');
-    }
-
-    public function reinforcedProblems(): BelongsToMany
-    {
-        return $this->belongsToMany(Problem::class, 'problem_user_reinforce', 'user_id', 'problem_id');
-    }
 
     public function validates(): void
     {
@@ -74,8 +64,6 @@ class User extends Model
         ) {
             $this->encrypted_password = password_hash($value, PASSWORD_DEFAULT);
         }
-
-
     }
 
     public function avatar(): ProfileAvatar
