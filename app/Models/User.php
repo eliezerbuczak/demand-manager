@@ -21,7 +21,8 @@ use Core\Database\ActiveRecord\Model;
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $columns = ['name', 'email', 'encrypted_password', 'profile_id', 'created_at', 'updated_at', 'deleted_at'];
+    protected static array $columns = ['name', 'email', 'encrypted_password',
+      'profile_id', 'created_at', 'updated_at', 'deleted_at'];
 
     protected ?string $password = null;
     protected ?string $password_confirmation = null;
