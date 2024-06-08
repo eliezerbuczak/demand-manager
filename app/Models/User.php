@@ -17,6 +17,8 @@ use Core\Database\ActiveRecord\Model;
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
+ * @property Problem[] $problems
+ * @property Problem[] $reinforced_problems
  */
 class User extends Model
 {
@@ -75,4 +77,10 @@ class User extends Model
     {
         return new ProfileAvatar($this);
     }
+
+    public function reinforcedProblems(): BelongsToMany
+    {
+        return $this->belongsToMany(Problem::class, 'problem_user_reinforce', 'user_id', 'problem_id');
+    }
+
 }
