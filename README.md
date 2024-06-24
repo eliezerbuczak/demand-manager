@@ -89,5 +89,5 @@ Access [localhost](http://localhost)
 ### Teste de API
 
 ```shell
-curl -H "Accept: application/json" localhost/problems
+curl -H "Accept: application/json" localhost/demands
 ```
