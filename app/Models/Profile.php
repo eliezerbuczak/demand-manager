@@ -16,6 +16,8 @@ class Profile extends Model
       * @property bool $delete_demand
       * @property bool $show_all_demands
       * @property int $id_user_created
+     * @property int $id_user_updated
+     * @property int $id_user_deleted
       * @property string $created_at
       * @property string $updated_at
       * @property string $deleted_at
@@ -23,7 +25,7 @@ class Profile extends Model
 
     protected static string $table = 'profiles';
     protected static array $columns = [
-        'name', 'create_demand', 'edit_demand', 'delete_demand', 'show_all_demands', 'id_user_created',
+        'name', 'create_demand', 'edit_demand', 'delete_demand', 'show_all_demands', 'id_user_created', 'id_user_updated', 'id_user_deleted',
         'created_at', 'updated_at', 'deleted_at'];
 
     public function validates(): void

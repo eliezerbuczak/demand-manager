@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Services\ProfileAvatar;
 use Core\Database\ActiveRecord\BelongsToMany;
 use Core\Database\ActiveRecord\HasMany;
 use Lib\Validations;
@@ -66,8 +65,9 @@ class User extends Model
         }
     }
 
-    public function avatar(): ProfileAvatar
+    public function demands(): BelongsToMany
     {
-        return new ProfileAvatar($this);
+         return $this->belongsToMany(Demand::class, 'demand_user', 'user_id', 'demand_id');
     }
+
 }
