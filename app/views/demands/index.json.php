@@ -6,7 +6,7 @@ foreach ($problems as $problem) {
     $problemsToJson[] = ['id' => $problem->getId(), 'title' => $problem->getTitle()];
 }
 
-$json['problems'] = $problemsToJson;
+$json['demands'] = $problemsToJson;
 $json['pagination'] = [
     'page'                       => $paginator->getPage(),
     'per_page'                   => $paginator->perPage(),
