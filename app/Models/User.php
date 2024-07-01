@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Core\Database\ActiveRecord\BelongsTo;
 use Core\Database\ActiveRecord\BelongsToMany;
 use Core\Database\ActiveRecord\HasMany;
 use Lib\Validations;
@@ -65,9 +66,36 @@ class User extends Model
         }
     }
 
-    public function demands(): BelongsToMany
+    public static function availableUsers(): array
     {
-         return $this->belongsToMany(Demand::class, 'demand_user', 'user_id', 'demand_id');
+        $users = User::all();
+        foreach ($users as $user) {
+            $profile = Profile::findById($user->profile_id);
+            if (!$profile->create_demand) {
+                $usersForDemand[] = $user;
+            }
+        }
+        if (isset($usersForDemand)) {
+            return $usersForDemand;
+        }
+        return [];
+
+    }
+
+    public function permissions(): Profile
+    {
+      return Profile::findById($this->profile_id);
+    }
+    public function demands(): array
+    {
+      $demands = $this->belongsToMany(Demand::class, 'demand_user', 'user_id', 'demand_id')->get();
+
+      foreach ($demands as $demand) {
+        $demand_user = DemandUser::where(['demand_id' => $demand->id, 'user_id' => $this->id])[0];
+        $demand->status_id = Status::findById($demand_user->status_id)->id;
+      }
+
+      return $demands;
     }
 
 }

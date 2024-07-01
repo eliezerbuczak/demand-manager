@@ -1,9 +1,54 @@
-<form action="<?= route('demands.create') ?>" method="POST" class="<?= $problem->hasErrors() ? '' : 'was-validated' ?>" novalidate>
-    <div class="mb-3">
-        <label for="problem_title" class="form-label">Título:</label>
-        <input type="text" value="<?= $problem->title ?>" name="problem[title]" class="form-control" id="problem_title" required>
-        <div class="invalid-feedback"><?= $problem->errors('title') ? $problem->errors('title') : '' ?></div>
+<form action="<?= route('demands.store') ?>" method="POST" class="<?= $demand->hasErrors() ? '' : 'was-validated' ?>" novalidate>
+  <div class="mb-3">
+    <div>
+      <label for="problem_title" class="form-label">Título:</label>
+      <input type="text" value="<?= $demand->title ?>" name="demand[title]" class="form-control" id="demand_title" required>
+      <div class="invalid-feedback"><?= $demand->errors('title') ? $demand->errors('title') : '' ?></div>
+    </div>
+    <div>
+      <label for="demand_expected_date" class="form-label">Data a ser realizada:</label>
+      <input type="date" value="<?= $demand->title ?>" name="demand[expected_date]" class="form-control" id="demand_expected_date" required>
+      <div class="invalid-feedback"><?= $demand->errors('title') ? $demand->errors('title') : '' ?></div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div>
+      <label for="demand_status" class="form-label">Status:</label>
+      <select name="demand[status_id]" class="form-select" id="demand_status" required disabled>
+        <?php foreach ($statuses as $status) : ?>
+          <option value="<?= $status->id ?>" <?= $status->id == $demand->status_id ? 'selected' : '' ?>>
+            <?= $status->name ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <div class="invalid-feedback"><?= $demand->errors('status_id') ? $demand->errors('status_id') : '' ?></div>
+      <input type="hidden" name="demand[status_id]" id="demand_status" value="<?= $demand->status_id ?>">
     </div>
 
-    <button type="submit" class="btn btn-primary">Registrar</button>
+    <div>
+      <label for="demand_path_image" class="form-label">Selecione uma imagem:</label>
+      <input type="file" name="demand[path_image]" class="form-control" id="demand_path_image" required>
+      <div class="invalid-feedback"><?= $demand->errors('path_image') ? $demand->errors('path_image') : '' ?></div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <div>
+      <label for="demand_user_id" class="form-label">Membros Atibuídos:</label>
+      <select name="demand[user_id][]" class="form-select" id="demand_user_id" required multiple>
+        <?php foreach ($users as $user) : ?>
+          <option value="<?= $user->id ?>"><?= $user->name ?></option>
+        <?php endforeach; ?>
+      </select>
+      <div class="invalid-feedback"><?= $demand->errors('user_id') ? $demand->errors('user_id') : '' ?></div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <div>
+      <label for="demand_description" class="form-label">Descrição:</label>
+      <textarea name="demand[description]" class="form-control" id="demand_description" required><?= $demand->description ?></textarea>
+      <div class="invalid-feedback"><?= $demand->errors('description') ? $demand->errors('description') : '' ?></div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Registrar</button>
 </form>

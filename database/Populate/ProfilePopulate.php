@@ -15,6 +15,7 @@ class ProfilePopulate
       'delete_demand' => 1,
       'show_all_demands' => 1,
       'id_user_created' => 1,
+      'edit_status' => 0,
     ];
     $user = [
       'name' => 'Usuário',
@@ -23,6 +24,7 @@ class ProfilePopulate
       'delete_demand' => 0,
       'show_all_demands' => 0,
       'id_user_created' => 1,
+      'edit_status' => 1,
     ];
     $admin = new Profile($admin);
     $admin->save();

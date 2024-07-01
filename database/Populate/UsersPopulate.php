@@ -25,9 +25,22 @@ class UsersPopulate
       'password_confirmation' => 'user'
     ];
 
+
     $user = new User($data);
     $user->save();
-    echo "Users populated with 2 registers\n";
+
+    $data = [
+      'name' => 'Pedro Santos',
+      'email' => 'user2@example.com',
+      'password' => 'user2',
+      'password_confirmation' => 'user2'
+    ];
+
+
+    $user = new User($data);
+    $user->save();
+
+    echo "Users populated with 3 registers\n";
   }
 
   public static function update()
@@ -43,5 +56,11 @@ class UsersPopulate
       'profile_id' => 2,
       'updated_at' => date('Y-m-d H:i:s')
     ]);
+    $user = User::findById(3);
+    $user->update([
+      'profile_id' => 2,
+      'updated_at' => date('Y-m-d H:i:s')
+    ]);
+
   }
 }

@@ -15,9 +15,10 @@ class Profile extends Model
       * @property bool $edit_demand
       * @property bool $delete_demand
       * @property bool $show_all_demands
+      * @property bool $edit_status
       * @property int $id_user_created
-     * @property int $id_user_updated
-     * @property int $id_user_deleted
+      * @property int $id_user_updated
+      * @property int $id_user_deleted
       * @property string $created_at
       * @property string $updated_at
       * @property string $deleted_at
@@ -25,7 +26,8 @@ class Profile extends Model
 
     protected static string $table = 'profiles';
     protected static array $columns = [
-        'name', 'create_demand', 'edit_demand', 'delete_demand', 'show_all_demands', 'id_user_created', 'id_user_updated', 'id_user_deleted',
+        'name', 'create_demand', 'edit_demand', 'delete_demand', 'show_all_demands', 'edit_status',
+        'id_user_created', 'id_user_updated', 'id_user_deleted',
         'created_at', 'updated_at', 'deleted_at'];
 
     public function validates(): void
@@ -36,5 +38,6 @@ class Profile extends Model
         Validations::notEmpty('edit_demand', $this);
         Validations::notEmpty('delete_demand', $this);
         Validations::notEmpty('show_all_demands', $this);
+        Validations::notEmpty('edit_status', $this);
     }
 }

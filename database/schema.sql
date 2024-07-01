@@ -1,6 +1,9 @@
 SET
 foreign_key_checks = 0;
 
+-- Drop triggers if they exist
+DROP TRIGGER IF EXISTS before_demand_user_update;
+
 -- Drop tables if they exist
 DROP TABLE IF EXISTS demand_user;
 DROP TABLE IF EXISTS demands;
@@ -17,6 +20,7 @@ CREATE TABLE `profiles`
   `edit_demand`      bool        NOT NULL,
   `delete_demand`    bool        NOT NULL,
   `show_all_demands` bool        NOT NULL,
+  `edit_status`      bool        NOT NULL,
   `id_user_created`  int         NOT NULL,
   `id_user_updated`  int,
   `id_user_deleted`  int,
@@ -99,6 +103,48 @@ CREATE TABLE `demand_user`
   FOREIGN KEY (`id_user_updated`) REFERENCES `users`(`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`id_user_deleted`) REFERENCES `users`(`id`) ON DELETE RESTRICT
 );
+
+
+CREATE TRIGGER before_demand_user_update
+  BEFORE UPDATE ON demand_user
+  FOR EACH ROW
+BEGIN
+  DECLARE all_status_1 INT;
+    DECLARE all_status_3 INT;
+    DECLARE total_rows INT;
+
+  SELECT COUNT(*) INTO all_status_1
+  FROM demand_user
+  WHERE demand_id = NEW.demand_id AND status_id = 1;
+
+  IF NEW.status_id = 1 AND OLD.status_id != 1 THEN
+        SET all_status_1 = all_status_1 + 1;
+    ELSEIF NEW.status_id != 1 AND OLD.status_id = 1 THEN
+        SET all_status_1 = all_status_1 - 1;
+END IF;
+
+SELECT COUNT(*) INTO all_status_3
+FROM demand_user
+WHERE demand_id = NEW.demand_id AND status_id = 3;
+IF NEW.status_id = 3 AND OLD.status_id != 3 THEN
+        SET all_status_3 = all_status_3 + 1;
+    ELSEIF NEW.status_id != 3 AND OLD.status_id = 3 THEN
+        SET all_status_3 = all_status_3 - 1;
+END IF;
+
+SELECT COUNT(*) INTO total_rows
+FROM demand_user
+WHERE demand_id = NEW.demand_id;
+
+IF all_status_1 = total_rows THEN
+UPDATE demands SET status_id = 1 WHERE id = NEW.demand_id;
+ELSEIF all_status_3 = total_rows THEN
+UPDATE demands SET status_id = 3 WHERE id = NEW.demand_id;
+ELSE
+UPDATE demands SET status_id = 2 WHERE id = NEW.demand_id;
+END IF;
+END;
+
 
 SET
 foreign_key_checks = 1;

@@ -8,10 +8,12 @@
         </div>
     </div>
     <div class="col-4">
+      <?php if ($user->create_demand): ?>
         <a href="<?= route('demands.create') ?>" class="btn btn-outline-primary">
             <i class="fe fe-plus"></i>
-            Registrar Problema
+            Criar Demanda
         </a>
+      <?php endif; ?>
     </div>
 </div>
 
@@ -19,26 +21,56 @@
     <thead>
         <th>ID</th>
         <th>Título</th>
-        <th></th>
+        <th>Descrição</th>
+        <th>Status</th>
+        <th>Ações</th>
     </thead>
     <tbody>
         <?php foreach ($demands as $demand) : ?>
             <tr>
                 <td><a href="<?= route('demands.show', ['id' => $demand->id]) ?>">#<?= $demand->id ?></a></td>
                 <td><?= $demand->title ?></td>
-                <td>
-                    <div class="d-flex flex-row-reverse">
-                        <form action="<?= route('demands.destroy', ['id' => $demand->id]) ?>" method="POST" class="m-0">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-link"><i class="bi bi-archive"></i></button>
-                        </form>
-                        <a href="<?= route('demands.edit', ['id' => $demand->id]) ?>" class="btn btn-link pe-0">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                    </div>
-                </td>
+                <td><?= $demand->description ?></td>
+              <td>
+                <span class="badge <?= getStatusBadgeClass($statusMap[$demand->status_id]->id) ?>">
+                 <?= $statusMap[$demand->status_id]->name ?>
+                </span>
+              </td>
+              <td>
+                <div class="d-flex gap-4">
+                  <?php if ($user->edit_demand || $user->edit_status): ?>
+                    <a href="<?= route('demands.edit', ['id' => $demand->id]) ?>" class="btn btn-outline-success">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                  <?php endif; ?>
+                    <a href="<?= route('demands.show', ['id' => $demand->id]) ?>" class="btn btn-outline-primary">
+                      <i class="bi bi-eye"></i>
+                    </a>
+                  <?php if ($user->delete_demand): ?>
+                    <form action="<?= route('demands.destroy', ['id' => $demand->id]) ?>" method="POST" class="m-0">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                    </form>
+                  <?php endif; ?>
+                </div>
+              </td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
 
+<?php
+function getStatusBadgeClass($statusId)
+{
+  switch ($statusId) {
+    case 1:
+      return 'bg-primary';
+    case 2:
+      return 'bg-warning';
+    case 3:
+      return 'bg-success';
+    default:
+      return 'bg-secondary';
+  }
+}
+?>

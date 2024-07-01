@@ -1,10 +1,64 @@
-<form action="<?= route('demands.update', ['id' => $problem->id]) ?>" method="POST" class="<?= $problem->hasErrors() ? '' : 'was-validated' ?>" novalidate>
+<form action="<?= route('demands.update', ['id' => $demand->id]) ?>" method="POST" class="<?= $demand->hasErrors() ? '' : 'was-validated' ?>" novalidate>
     <input type="hidden" name="_method" value="PUT">
-    <div class="mb-3">
-        <label for="problem_title" class="form-label">Título:</label>
-        <input type="text" name="problem[title]" class="form-control" id="problem_title" value="<?= $problem->title ?>" required>
-        <div class="invalid-feedback"><?= $problem->errors('title') ? $problem->errors('title') : '' ?></div>
+  <div class="mb-3">
+    <div>
+      <label for="problem_title" class="form-label">Título:</label>
+      <input type="text" value="<?= $demand->title ?>" name="demand[title]" class="form-control" id="demand_title"
+        <?= !$user->edit_demand ? 'disabled' : '' ?> required>
+      <div class="invalid-feedback"><?= $demand->errors('title') ? $demand->errors('title') : '' ?></div>
+    </div>
+    <div>
+      <label for="demand_expected_date" class="form-label">Data a ser realizada:</label>
+      <input type="date" value="<?= $demand->expected_date ?>" name="demand[expected_date]" class="form-control" id="demand_expected_date"
+             <?= !$user->edit_demand ? 'disabled' : '' ?> required>
+      <div class="invalid-feedback"><?= $demand->errors('title') ? $demand->errors('title') : '' ?></div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div>
+      <label for="demand_status" class="form-label">Status:</label>
+      <select name="demand[status_id]" class="form-select" id="demand_status" <?= !$user->edit_status ? 'disabled' : '' ?> required>
+        <?php foreach ($statuses as $status) : ?>
+          <option value="<?= $status->id ?>" <?= $status->id == $demand->status_id ? 'selected' : '' ?>>
+            <?= $status->name ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <div class="invalid-feedback"><?= $demand->errors('status_id') ? $demand->errors('status_id') : '' ?></div>
+      <?php if (!$user->edit_status): ?>
+        <input type="hidden" name="demand[status_id]" id="demand_status" value="<?= $demand->status_id ?>">
+      <?php endif; ?>
     </div>
 
+    <div>
+      <label for="demand_path_image" class="form-label">Selecione uma imagem:</label>
+      <input type="file" name="demand[path_image]" class="form-control" id="demand_path_image"
+        <?= !$user->edit_demand ? 'disabled' : '' ?> required>
+      <div class="invalid-feedback"><?= $demand->errors('path_image') ? $demand->errors('path_image') : '' ?></div>
+    </div>
+  </div>
+  <div class="mb-3">
+    <div>
+      <label for="demand_user_id" class="form-label">Membros Atribuídos:</label>
+      <select name="demand[users][]" class="form-select" id="demand_user_id" <?= !$user->edit_demand ? 'disabled' : '' ?>
+              required multiple>
+        <?php foreach ($users_available as $user) : ?>
+          <option value="<?= $user->id ?>" <?= in_array($user->id, $users) ? 'selected' : '' ?>>
+            <?= $user->name ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <div class="invalid-feedback"><?= $demand->errors('user_id') ? $demand->errors('user_id') : '' ?></div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <div>
+      <label for="demand_description" class="form-label">Descrição:</label>
+      <textarea name="demand[description]" class="form-control" id="demand_description" required><?= $demand->description ?></textarea>
+      <div class="invalid-feedback"><?= $demand->errors('description') ? $demand->errors('description') : '' ?></div>
+    </div>
+  </div>
     <button type="submit" class="btn btn-primary">Atualizar</button>
 </form>
